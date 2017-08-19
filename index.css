@@ -1,0 +1,82 @@
+.center-screen {
+  padding: 1em;
+  border: 1px solid #333;
+  background-color: #eee;
+}
+
+.progress {
+  position: relative;
+  background-color: #333;
+  border-width: 1px 0;
+  border-style: solid none;
+  border-color: #123431;
+  border-radius: 0;
+  height: 2em;
+  margin: 0;
+  text-align: center;
+}
+
+.progress:nth-child(1) {
+  border-top-width: 0;
+}
+
+.progress:nth-last-child(1) {
+  border-bottom-width: 0;
+}
+
+.progress-value {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: .2em;
+  color: #fff;
+}
+
+.progress-bar-health {
+  background-color: #c33;
+}
+
+.progress-bar-mana {
+  background-color: #33c;
+}
+
+.progress-bar-fdamage {
+  background-color: #3c3;
+}
+
+.skill-container {
+  text-align: center;
+  margin: 1em 0;
+}
+
+.skill-container > .input-group {
+  display: inline-table;
+}
+
+.btn-skill {
+  position: relative;
+  width: 5em;
+  height: 5em;
+  border-radius: 0;
+}
+
+.btn-skill-edge {
+  width: 7em;
+}
+
+.btn-skill > span {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: .6em;
+  font-size: 2em;
+}
+
+#battle_log {
+  height: 20em;
+  overflow: auto;
+  margin: 1em 0;
+  border: 2px #ccc;
+  border-style: solid none;
+  padding-bottom: .5em;
+}

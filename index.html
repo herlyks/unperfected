@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <title>Unperfected by Herlyks</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href="index.css" rel="stylesheet" type="text/css" />
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  </head>
+  <body>
+    <script src="actor.js"></script>
+    <script src="index.js"></script>
+    <div class="col-sm-12">
+      <div class="row">
+
+        <div class="col-md-4">
+          <div class="checkbox ">
+            <label>
+              <input type="checkbox" id="percent_display">
+              Display percent value
+            </label>
+          </div>
+          <div id="new_enemy" class="btn btn-default">New Enemy</div>
+        </div><!-- end right screen -->
+
+        <div class="col-md-4 center-screen">
+          <div class="enemy-div">
+            <div class="progress">
+              <div id="enemy_hpbar_value" class="progress-value">60%</div>
+              <div id="enemy_hpbar" class="progress-bar progress-bar-health"></div>
+            </div>
+            <div class="progress">
+              <div id="enemy_mpbar_value" class="progress-value">60%</div>
+              <div id="enemy_mpbar" class="progress-bar progress-bar-mana"></div>
+            </div>
+            <div class="progress">
+              <div id="enemy_fdbar_value" class="progress-value">60%</div>
+              <div id="enemy_fdbar" class="progress-bar progress-bar-fdamage"></div>
+            </div>
+          </div> <!-- end enemy div -->
+          <div id="battle_log">
+
+          </div>
+          <div class="player-div">
+            <div class="progress">
+              <div id="player_hpbar_value" class="progress-value">60%</div>
+              <div id="player_hpbar" class="progress-bar progress-bar-health"></div>
+            </div>
+            <div class="progress">
+              <div id="player_mpbar_value" class="progress-value">60%</div>
+              <div id="player_mpbar" class="progress-bar progress-bar-mana"></div>
+            </div>
+            <div class="progress">
+              <div id="player_fdbar_value" class="progress-value">60%</div>
+              <div id="player_fdbar" class="progress-bar progress-bar-fdamage"></div>
+            </div>
+            <div class="skill-container">
+              <div class="input-group">
+                <div id="skill0" class="btn btn-success btn-skill btn-skill-edge">
+                  <span>A</span>
+                </div>
+                <div id="skill1" class="btn btn-info btn-skill">
+                  <span>S1</span>
+                </div>
+                <div id="skill2" class="btn btn-info btn-skill">
+                  <span>S2</span>
+                </div>
+                <div id="skill3" class="btn btn-info btn-skill">
+                  <span>S3</span>
+                </div>
+                <div id="skill4" class="btn btn-danger btn-skill btn-skill-edge">
+                  <span>U</span>
+                </div>
+              </div>
+            </div>
+          </div> <!-- end player div -->
+        </div> <!-- end center screen -->
+
+        <div class="col-md-4">
+
+        </div><!-- end right screen -->
+
+      </div>
+    </div>
+  </body>
+</html>
