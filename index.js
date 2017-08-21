@@ -94,7 +94,8 @@ $(document).ready(function() {
     enemy.hp = dice(0, enemy.max_hp);
     enemy.mp = dice(0, enemy.max_mp);
     enemy.fd = dice(0, enemy.max_fd);
-    writeBattleLog(enemy);
+    battle_log.empty();
+    writeBattleLog('New Enemy spawned..');
   });
 
 });

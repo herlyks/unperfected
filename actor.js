@@ -1,5 +1,6 @@
 function Actor(name, stat = {}) {
   this.name = name;
+  this.level = 1;
 
   this.max_hp = typeof stat.max_hp !== 'undefined' ? stat.max_hp : 100;
   this.hp     = typeof stat.hp !== 'undefined' ? stat.hp : this.max_hp;
@@ -12,6 +13,47 @@ function Actor(name, stat = {}) {
   this.max_fd = typeof stat.max_fd !== 'undefined' ? stat.max_fd : 50;
   this.fd     = typeof stat.fd !== 'undefined' ? stat.fd : 0;
   this.def    = typeof stat.def !== 'undefined' ? stat.def : 5;
+
+  var exp = 0;
+  this.getExp = function() {
+    return exp;
+  };
+  this.gainExp = function(val) {
+    exp += val;
+    var limit = this.getExpNextLevel(998) + 1;
+    exp > limit ? exp = limit : '';
+    while (exp >= this.getExpNextLevel()) {
+      this.level += 1;
+      console.log(this.name + ' level up!');
+    }
+  };
+  this.getExpNextLevel = function(level = this.level) {
+    var base = 100;
+    var flat = 50;
+    var rate = 0.8;
+    var new_flat = flat * (level - 1);
+    var new_rate = rate * (level - 1) * new_flat;
+    var new_base = rate * (level - 1) * base;
+    return base + new_flat + new_rate + new_base;
+  };
+  this.getExpDrop = function(level = this.level) {
+    var base = 10;
+    var flat = 5;
+    var rate = 0.07;
+    var new_flat = flat * (level - 1);
+    var new_rate = rate * (level - 1) * new_flat;
+    var new_base = rate * (level - 1) * base;
+    return base + new_flat + new_rate + new_base;
+  };
+  this.getGoldDrop = function(level = this.level) {
+    var base = 1;
+    var flat = 1;
+    var rate = 0.1;
+    var new_flat = flat * (level - 1);
+    var new_rate = rate * (level - 1) * new_flat;
+    var new_base = rate * (level - 1) * base;
+    return base + new_flat + new_rate + new_base;
+  };
 
   function setBasicAttack(f) {
     this.basicAttack = f;
