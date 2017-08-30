@@ -1,2 +1,7 @@
 # unperfected
-A game created with just html, css and js
+A game created with only html, css and js
+
+Library used:
+- jQuery
+- Mustache.js
+- Bootstrap
