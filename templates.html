@@ -1,0 +1,13 @@
+<script type="text/html" id="stat_template">
+  <div class="col-md-6">{{stat_key}}</div>
+  <div class="col-md-6">{{stat_value}}</div>
+</script>
+<script type="text/html" id="battle_msg">
+  {{#deal_damage}}
+    <span class="{{caster.class}}">{{caster.value}}</span>
+    {{#damage.value}}deal <span class="{{damage.class}}">{{damage.value}}</span> damage{{/damage.value}}
+    {{#damage.critical}}deal <span class="{{damage.class}}">{{damage.critical}} critical damage</span>{{/damage.critical}}
+    to <span class="{{target.class}}">{{target.value}}</span>
+    using <span class="{{skill.class}}">[{{skill.value}}]</span>
+  {{/deal_damage}}
+</script>

@@ -79,4 +79,31 @@
   border: 2px #ccc;
   border-style: solid none;
   padding-bottom: .5em;
+  color: #333;
+}
+
+.playername {
+  color: #33c;
+  font-weight: bold;
+}
+
+.enemyname {
+  color: #c33;
+  font-weight: bold;
+}
+
+.skillname {
+  color: #3c3;
+  font-weight: bold;
+}
+
+.damagetext {
+  color: #3c3;
+  font-weight: bold;
+}
+
+.damagecritical {
+  color: #c33;
+  font-weight: bold;
+  /*font-size: 1.2em;*/
 }

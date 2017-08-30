@@ -1,0 +1,13 @@
+2017/08/22
+-view stat
+-if gameover
+
+2017/08/30
+-added global.js
+-added main.js
+-index.js now only contain document ready, update, render and debug
+-all global variable will be declared in global.js
+-all gameplay script will be inside main.js
+-added templates.html
+-added getTemplate function with element id as parameter, return html string
+-add some formatting to the battle log

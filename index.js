@@ -1,29 +1,12 @@
-var player = new Actor('Player 1');
-var enemy = new Actor('Enemy', {
-  max_hp: dice(50, 200),
-  max_mp: dice(50, 200),
-  max_fd: dice(10, 100)
-});
-
-var player_hpbar;
-var player_hpbar_value;
-var player_hp_percent;
-var player_mpbar;
-var player_mpbar_value;
-var player_mp_percent;
-var player_fdbar;
-var player_fdbar_value;
-var player_fd_percent;
-var enemy_hpbar;
-var enemy_hpbar_value;
-var enemy_hp_percent;
-var enemy_mpbar;
-var enemy_mpbar_value;
-var enemy_mp_percent;
-var enemy_fdbar;
-var enemy_fdbar_value;
-var enemy_fd_percent;
-var battle_log;
+if (typeof actor_dot_js === 'undefined') {
+  throw new Error('actor.js is missing..');
+}
+if (typeof global_dot_js === 'undefined') {
+  throw new Error('global.js is missing..');
+}
+if (typeof main_dot_js === 'undefined') {
+  throw new Error('main.js is missing..');
+}
 
 $(document).ready(function() {
   player_hpbar = $('#player_hpbar');
@@ -40,7 +23,9 @@ $(document).ready(function() {
   enemy_fdbar_value = $('#enemy_fdbar_value');
   battle_log = $('#battle_log');
 
-  setInterval(render, 100);
+  templates = loadTemplateFile();
+
+  setInterval(render, 33);
 
   $('.btn-skill').each(function() {
     $(this).popover({
@@ -55,21 +40,25 @@ $(document).ready(function() {
         return;
       }
 
+      if (battle_over == true) {
+        return;
+      }
+
       switch ($(this).prop('id')) {
         case 'skill0':
-          basicAttack(enemy);
+          player.basicAttack(enemy);
           break;
         case 'skill1':
-          skillOne(enemy);
+          player.skillOne(enemy);
           break;
         case 'skill2':
-          skillTwo(enemy);
+          player.skillTwo(enemy);
           break;
         case 'skill3':
-          skillThree(enemy);
+          player.skillThree(enemy);
           break;
         case 'skill4':
-          skillUltimate(enemy);
+          player.skillUltimate(enemy);
           break;
         default:
           break;
@@ -81,21 +70,9 @@ $(document).ready(function() {
   });
 
   battle_log.scrollTop(battle_log[0].scrollHeight);
-  enemy.hp = dice(0, enemy.max_hp);
-  enemy.mp = dice(0, enemy.max_mp);
-  enemy.fd = dice(0, enemy.max_fd);
 
   $('#new_enemy').click(function() {
-    enemy = new Actor('Enemy', {
-      max_hp: dice(50, 200),
-      max_mp: dice(50, 200),
-      max_fd: dice(10, 100)
-    });
-    enemy.hp = dice(0, enemy.max_hp);
-    enemy.mp = dice(0, enemy.max_mp);
-    enemy.fd = dice(0, enemy.max_fd);
-    battle_log.empty();
-    writeBattleLog('New Enemy spawned..');
+    spawnEnemy();
   });
 
 });
@@ -114,6 +91,13 @@ function update() {
   enemy.mp < 0 ? enemy.mp = 0 : '';
   enemy.fd > enemy.max_fd ? enemy.fd = enemy.max_fd : '';
   enemy.fd < 0 ? enemy.fd = 0 : '';
+
+  if (player.hp == 0 || enemy.hp == 0) {
+    if (battle_over == false) {
+      battle_over = true;
+      writeBattleLog('Battle is over..');
+    }
+  }
 
   player_hp_percent = Math.floor((player.hp / player.max_hp * 100) * 100) / 100;
   player_mp_percent = Math.floor((player.mp / player.max_mp * 100) * 100) / 100;
@@ -152,39 +136,26 @@ function render() {
     enemy_mpbar_value.prop('innerHTML', Math.floor(enemy.mp) + '/' + enemy.max_mp);
     enemy_fdbar_value.prop('innerHTML', Math.floor(enemy.fd) + '/' + enemy.max_fd);
   }
+
+  debug();
 }
 
-function dice(min = 1, max = 6) {
-  return Math.floor(Math.random() * (max - min + 1) + min);
-}
-
-function writeBattleLog(msg) {
-  var date = new Date();
-  var time = addZero(date.getHours().toString(), 2) + ':' + addZero(date.getMinutes().toString(), 2) + ':' + addZero(date.getSeconds().toString(), 2);
-  battle_log.append('<br>' + time + ' | ' + msg);
-  battle_log.scrollTop(battle_log[0].scrollHeight);
-}
-
-function addZero(str, digit = 2) {
-  return str.length < digit ? '0' + str : str;
-}
-
-function basicAttack(target) {
-  target.hp -= 10;
-}
-
-function skillOne(target) {
-  target.hp -= 10 + (0.05 * (target.max_hp - target.hp));
-}
-
-function skillTwo(target) {
-  target.hp += 20;
-}
-
-function skillThree() {
-
-}
-
-function skillUltimate() {
-
+function debug() {
+  var template_stat = getTemplate('stat_template');
+  $('#actor_stat').empty();
+  for (var i = 0; i < [enemy, player].length; i++) {
+    var actor = [enemy, player][i];
+    var el = '<div class="col-md-6">';
+    for (var k in actor) {
+      if (typeof actor[k] !== 'function') {
+        var elm = Mustache.render(template_stat, {
+          stat_key: k,
+          stat_value: actor[k]
+        })
+        el += elm;
+      }
+    }
+    el += '</div>';
+    $('#actor_stat').append(el);
+  }
 }
