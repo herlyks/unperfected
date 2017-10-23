@@ -5,9 +5,31 @@
 <script type="text/html" id="battle_msg">
   {{#deal_damage}}
     <span class="{{caster.class}}">{{caster.value}}</span>
-    {{#damage.value}}deal <span class="{{damage.class}}">{{damage.value}}</span> damage{{/damage.value}}
+    {{#damage.value}}deal <span class="{{damage.class}}">{{damage.value}} damage</span>{{/damage.value}}
     {{#damage.critical}}deal <span class="{{damage.class}}">{{damage.critical}} critical damage</span>{{/damage.critical}}
     to <span class="{{target.class}}">{{target.value}}</span>
     using <span class="{{skill.class}}">[{{skill.value}}]</span>
   {{/deal_damage}}
+  {{#restore_hp}}
+    <span class="{{caster.class}}">{{caster.value}}</span>
+    {{#restore.value}}restore <span class="{{restore.class}}">{{restore.value}} HP</span>{{/restore.value}}
+    {{#restore.final}}restore <span class="{{restore.class}}">{{restore.final}} HP</span>{{/restore.final}}
+    to <span class="{{target.class}}">{{target.value}}</span>
+    using <span class="{{skill.class}}">[{{skill.value}}]</span>
+  {{/restore_hp}}
+</script>
+<script type="text/html" id="levelup_modal_template">
+  <div class="modal fade" tabindex="-1" id="levelup_modal_{{level}}">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">Level Up! Choose upgrade:</div>
+        <div class="modal-body">
+          <button type="button" class="btn btn-primary">Max HP +10</button>
+          <button type="button" class="btn btn-success">Max MP +10</button>
+          <button type="button" class="btn btn-warning">Max FD +10</button>
+        </div>
+        <!-- <div class="modal-footer"></div> -->
+      </div>
+    </div>
+  </div>
 </script>

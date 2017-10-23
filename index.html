@@ -13,7 +13,9 @@
   </head>
   <body>
     <script src="actor.js"></script>
+    <script src="db_skill.js"></script>
     <script src="global.js"></script>
+    <script src="template_options.js"></script>
     <script src="main.js"></script>
     <script src="index.js"></script>
     <div class="col-sm-12">
@@ -30,6 +32,10 @@
             <div id="new_enemy" class="btn btn-default">New Enemy</div>
           </div>
           <div id="actor_stat"></div>
+          <div id="debug"></div>
+          <div class="col-md-12">
+            <button type="button" class="btn btn-primary" id="btn_small_modal">Small modal</button>
+          </div>
         </div><!-- end right screen -->
 
         <div class="col-md-4 center-screen">
@@ -89,6 +95,22 @@
           <h3>Select Skill</h3>
         </div><!-- end right screen -->
 
+      </div>
+    </div>
+    <div class="modal fade" tabindex="-1" id="small_modal">
+      <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+          <div class="modal-header">
+            modal header
+          </div>
+          <div class="modal-body">
+            modal body
+          </div>
+          <div class="modal-footer">
+            modal footer
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          </div>
+        </div>
       </div>
     </div>
   </body>

@@ -1,8 +1,12 @@
 var actor_dot_js = 'actor.js is loaded..';
 
 function Actor(name, stat = {}) {
+  var exp = 0;
+
   this.name = name;
   this.level = 1;
+  this.gold = 0;
+  this.skill = [];
 
   this.max_hp = typeof stat.max_hp !== 'undefined' ? stat.max_hp : 100;
   this.max_mp = typeof stat.max_mp !== 'undefined' ? stat.max_mp : 100;
@@ -17,18 +21,30 @@ function Actor(name, stat = {}) {
   this.mp     = typeof stat.mp !== 'undefined' ? stat.mp : this.max_mp;
   this.fd     = typeof stat.fd !== 'undefined' ? stat.fd : 0;
 
-  var exp = 0;
   this.getExp = function() {
     return exp;
   };
-  this.gainExp = function(val) {
-    exp += val;
+  this.gainExp = function(val, callback) {
+    var actorlevel = this.level;
     var limit = this.getExpNextLevel(998) + 1;
+    exp += val;
     exp > limit ? exp = limit : '';
     while (exp >= this.getExpNextLevel()) {
       this.level += 1;
-      console.log(this.name + ' level up!');
+      if (typeof callback !== 'undefined') {
+        callback();
+      } else {
+        console.log('callback is undefined');
+      }
     }
+    // while (this.level > actorlevel) {
+      // if (typeof callback !== 'undefined') {
+      //   callback();
+      // } else {
+      //   console.log('callback is undefined');
+      // }
+      // actorlevel += 1;
+    // }
   };
   this.getExpNextLevel = function(level = this.level) {
     var base = 100;
@@ -58,23 +74,21 @@ function Actor(name, stat = {}) {
     return base + new_flat + new_rate + new_base;
   };
 
-  function setBasicAttack(f) {
-    this.basicAttack = f;
+  this.setSkill = function(index, skill) {
+    this.skill[index] = skill;
+    this.skill[index].actor = this;
   }
+}
 
-  function setSkillOne(f) {
-    this.skillOne = f;
-  }
-
-  function setSkillTwo(f) {
-    this.skillTwo = f;
-  }
-
-  function setSkillThree(f) {
-    this.skillThree = f;
-  }
-
-  function setSkillUltimate(f) {
-    this.skillUltimate = f;
+function Skill(name, castTo = undefined) {
+  this.name = name;
+  this.description = '';
+  this.actor = {};
+  if (castTo !== undefined) {
+    this.castTo = castTo;
+  } else {
+    this.castTo = function(target = {}) {
+      console.log(this.actor.name + ' cast ' + this.name + ' to ' + target.name);
+    };
   }
 }

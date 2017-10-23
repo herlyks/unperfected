@@ -1,8 +1,14 @@
 if (typeof actor_dot_js === 'undefined') {
   throw new Error('actor.js is missing..');
 }
+if (typeof db_skill === 'undefined') {
+  throw new Error('db_skill.js is missing..');
+}
 if (typeof global_dot_js === 'undefined') {
   throw new Error('global.js is missing..');
+}
+if (typeof template_options_dot_js === 'undefined') {
+  throw new Error('template_options.js is missing..');
 }
 if (typeof main_dot_js === 'undefined') {
   throw new Error('main.js is missing..');
@@ -28,9 +34,15 @@ $(document).ready(function() {
   setInterval(render, 33);
 
   $('.btn-skill').each(function() {
+    var index = $(this).prop('id').slice('skill'.length);
+    var skill = player.skill[index];
+    if (typeof skill === 'undefined') {
+      skill = {};
+    }
+
     $(this).popover({
-      title: $(this).prop('id'),
-      content: 'WASD',
+      title: skill.name || 'undefined',
+      content: skill.description || 'undefined',
       placement: 'auto',
       trigger: 'hover'
     });
@@ -44,21 +56,21 @@ $(document).ready(function() {
         return;
       }
 
-      switch ($(this).prop('id')) {
-        case 'skill0':
-          player.basicAttack(enemy);
+      switch (index) {
+        case '0':
+          skill.castTo(enemy);
           break;
-        case 'skill1':
-          player.skillOne(enemy);
+        case '1':
+          skill.castTo(enemy);
           break;
-        case 'skill2':
-          player.skillTwo(enemy);
+        case '2':
+          skill.castTo(enemy);
           break;
-        case 'skill3':
-          player.skillThree(enemy);
+        case '3':
+          skill.castTo(enemy);
           break;
-        case 'skill4':
-          player.skillUltimate(enemy);
+        case '4':
+          skill.castTo(enemy);
           break;
         default:
           break;
@@ -75,6 +87,16 @@ $(document).ready(function() {
     spawnEnemy();
   });
 
+  $('#small_modal').modal({
+    show : false,
+    backdrop : 'static',
+    keyboard : 'false'
+  });
+
+  $('#btn_small_modal').click(function() {
+    $('#small_modal').modal('show');
+  });
+
 });
 
 function update() {
@@ -82,20 +104,44 @@ function update() {
   player.hp < 0 ? player.hp = 0 : '';
   player.mp > player.max_mp ? player.mp = player.max_mp : '';
   player.mp < 0 ? player.mp = 0 : '';
-  player.fd > player.max_fd ? player.fd = player.max_fd : '';
-  player.fd < 0 ? player.fd = 0 : '';
+  // player.fd > player.max_fd ? player.fd = player.max_fd : '';
+  // player.fd < 0 ? player.fd = 0 : '';
 
   enemy.hp > enemy.max_hp ? enemy.hp = enemy.max_hp : '';
   enemy.hp < 0 ? enemy.hp = 0 : '';
   enemy.mp > enemy.max_mp ? enemy.mp = enemy.max_mp : '';
   enemy.mp < 0 ? enemy.mp = 0 : '';
-  enemy.fd > enemy.max_fd ? enemy.fd = enemy.max_fd : '';
-  enemy.fd < 0 ? enemy.fd = 0 : '';
+  // enemy.fd > enemy.max_fd ? enemy.fd = enemy.max_fd : '';
+  // enemy.fd < 0 ? enemy.fd = 0 : '';
 
-  if (player.hp == 0 || enemy.hp == 0) {
+  if (player.hp == 0) {
     if (battle_over == false) {
       battle_over = true;
       writeBattleLog('Battle is over..');
+      writeBattleLog(enemy.name + ' win..');
+    }
+  } else if(enemy.hp == 0) {
+    if (battle_over == false) {
+      battle_over = true;
+      writeBattleLog('Battle is over..');
+      writeBattleLog(player.name + ' win..');
+      player.gainExp(enemy.getExpDrop(), function() {
+        var template = Mustache.render(getTemplate('levelup_modal_template'), {
+          level : player.level
+        });
+        $('body').append(template);
+        $('#levelup_modal').modal({
+          show : true,
+          backdrop : 'static',
+          keyboard : 'false'
+        });
+        $('#levelup_modal button').click(function() {
+          $('#levelup_modal_'+player.level).modal('hide');
+          $('#levelup_modal_'+player.level).on('hidden.bs.modal', function() {
+            $('#levelup_modal_'+player.level).remove();
+          });
+        });
+      });
     }
   }
 
@@ -147,7 +193,7 @@ function debug() {
     var actor = [enemy, player][i];
     var el = '<div class="col-md-6">';
     for (var k in actor) {
-      if (typeof actor[k] !== 'function') {
+      if (typeof actor[k] !== 'function' && typeof actor[k] !== 'object') {
         var elm = Mustache.render(template_stat, {
           stat_key: k,
           stat_value: actor[k]
@@ -158,4 +204,11 @@ function debug() {
     el += '</div>';
     $('#actor_stat').append(el);
   }
+  $('#debug').empty();
+  var playerxp = player.getExp();
+  var requiredxp = player.getExpNextLevel();
+  var previousxp = player.getExpNextLevel(player.level - 1);
+  player.level == 1 ? previousxp = 0 : '';
+  var percentxp = Math.floor(((playerxp - previousxp) / (requiredxp - previousxp) * 100) * 100) / 100;
+  $('#debug').append('levelup progress: ' + playerxp + '/' + requiredxp + ' (' + percentxp + '%)');
 }
